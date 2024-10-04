@@ -1,11 +1,14 @@
 <template>
-  <h1 v-if="photos?.results.length === 0">
+  <p v-if="photos?.results.length === 0">
     Search result for {{ query.q }} not found!
-  </h1>
+  </p>
   <PhotoGrid v-else :photos="photos?.results" :status="status" />
 </template>
 
 <script setup lang="ts">
+definePageMeta({
+  layout: "search",
+});
 import PhotoGrid from "@/components/PhotoGrid.vue";
 import { useSearchPhoto } from "@/api/photo";
 const route = useRoute();
@@ -14,7 +17,7 @@ const { data: photos, status } = useSearchPhoto(query.q as string);
 </script>
 
 <style lang="scss" scoped>
-h1 {
+p {
   text-align: center;
   margin-top: 2rem;
 }
