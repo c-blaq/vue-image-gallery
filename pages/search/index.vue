@@ -2,7 +2,7 @@
   <h1 v-if="photos?.results.length === 0">
     Search result for {{ query.q }} not found!
   </h1>
-  <PhotoGrid v-else :photos="photos?.results" />
+  <PhotoGrid v-else :photos="photos?.results" :status="status" />
 </template>
 
 <script setup lang="ts">

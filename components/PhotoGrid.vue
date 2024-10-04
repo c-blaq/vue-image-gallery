@@ -2,7 +2,14 @@ import type { LanguageServiceMode } from 'typescript';
 <template>
   <div class="grid">
     <div class="column" v-for="column in columns">
-      <div class="figure" v-for="photo in column">
+      <div
+        class="figure"
+        v-if="status !== 'success'"
+        v-for="(val, index) in Array.from({ length: 2 })"
+      >
+        <Skeleton />
+      </div>
+      <div class="figure" v-else v-for="photo in column" :key="photo.id">
         <NuxtLink :to="`/photo/${photo.id}`" class="image-link">
           <img :src="photo.urls.small" :alt="photo.alt_description" />
           <div class="image-desc">
@@ -17,7 +24,8 @@ import type { LanguageServiceMode } from 'typescript';
 
 <script lang="ts" setup>
 import type { Photo } from "~/typings";
-const { photos } = defineProps<{ photos?: Photo[] | null }>();
+import Skeleton from "@/components/Skeleton.vue";
+const { photos } = defineProps<{ photos?: Photo[] | null; status: string }>();
 
 const numberOfColumns = window?.innerWidth < 999 ? 2 : 3;
 
