@@ -22,4 +22,8 @@ header {
   align-items: center;
   justify-content: center;
 }
+
+main {
+  padding: 0 1rem;
+}
 </style>
