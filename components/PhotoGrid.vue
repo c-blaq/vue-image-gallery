@@ -3,11 +3,11 @@ import type { LanguageServiceMode } from 'typescript';
   <div class="grid">
     <div class="column" v-for="column in columns">
       <div class="figure" v-for="photo in column">
-        <NuxtLink :to="`/photo/${photo.desc}`" class="image-link">
-          <img :src="photo.imageSrc" alt="" />
+        <NuxtLink :to="`/photo/${photo.id}`" class="image-link">
+          <img :src="photo.urls.small" :alt="photo.alt_description" />
           <div class="image-desc">
-            <h2>John Doe</h2>
-            <p>Lagos, Nigeria</p>
+            <h2>{{ photo.user.name }}</h2>
+            <p>{{ photo.user.location }}</p>
           </div>
         </NuxtLink>
       </div>
@@ -16,41 +16,14 @@ import type { LanguageServiceMode } from 'typescript';
 </template>
 
 <script lang="ts" setup>
-const Photos: Record<string, string>[] = [
-  {
-    imageSrc: "/images/dogs.jpeg",
-    desc: "this is a dog",
-  },
-  {
-    imageSrc: "/images/wall.jpg",
-    desc: "this is a wall",
-  },
-  {
-    imageSrc: "/images/dogs.jpeg",
-    desc: "this is a dog",
-  },
-  {
-    imageSrc: "/images/dog2.jpg",
-    desc: "this is a phone",
-  },
-  {
-    imageSrc: "/images/wall.jpg",
-    desc: "this is a dog",
-  },
-  {
-    imageSrc: "/images/samsung.jpg",
-    desc: "this is a sam",
-  },
-];
+import type { Photo } from "~/typings";
+const { photos } = defineProps<{ photos?: Photo[] | null }>();
 
 const numberOfColumns = window?.innerWidth < 999 ? 2 : 3;
 
 const columns = computed(() => {
-  const columns = Array.from(
-    { length: numberOfColumns },
-    () => [] as Record<string, string>[]
-  );
-  Photos?.forEach((photo, index) => {
+  const columns = Array.from({ length: numberOfColumns }, () => [] as Photo[]);
+  photos?.forEach((photo, index) => {
     const columnIndex = index % numberOfColumns;
     columns[columnIndex].push(photo);
   });
@@ -104,9 +77,13 @@ $gridGap: 50px;
     margin-bottom: 0.5rem;
     font-weight: 500;
 
+    & > h2 {
+      text-transform: capitalize;
+    }
+
     & > p {
       color: #cfcece;
-      font-size: 0.8rem;
+      font-size: 0.9rem;
     }
   }
 }

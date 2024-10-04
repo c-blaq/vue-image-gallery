@@ -9,6 +9,7 @@ const axios = AxioConfig.create({
   },
 });
 
+// the reason for doing this is to prevent the access key from geeting exposed on the client side
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig(event);
   const { path } = event;
