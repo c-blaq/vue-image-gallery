@@ -87,7 +87,7 @@ dialog {
 
   .dialog-content {
     border-radius: 20px;
-    overflow: hidden;
+    overflow-y: auto;
     background: white;
     max-height: fit-content;
     width: 100%;
@@ -113,7 +113,7 @@ dialog {
 
     img {
       width: 100%;
-      height: 100%;
+      height: 80%;
       max-height: 600px;
       background: #eceaea;
       object-fit: cover;

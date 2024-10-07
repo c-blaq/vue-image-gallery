@@ -2,18 +2,14 @@ import type { LanguageServiceMode } from 'typescript';
 <template>
   <div class="grid">
     <div class="column" v-for="column in columns">
-      <div
-        class="figure"
-        v-if="status !== 'success'"
-        v-for="val in Array.from({ length: 2 })"
-      >
+      <div v-if="status !== 'success'" v-for="val in Array.from({ length: 2 })">
         <Skeleton />
       </div>
-      <div class="figure" v-else v-for="photo in column" :key="photo.id">
+      <div v-else v-for="photo in column" :key="photo.id">
         <div
           tabindex="0"
           role="button"
-          class="image-link"
+          class="image-container"
           @click="handleShowImage(photo.id)"
         >
           <img :src="photo.urls.small" :alt="photo.alt_description" />
@@ -56,7 +52,8 @@ const handleShowImage = (id: string) => {
 </script>
 
 <style lang="scss" scoped>
-$gridGap: 50px;
+$gridGapDesktop: 50px;
+$gridGapMobile: 20px;
 
 .grid {
   display: grid;
@@ -64,18 +61,14 @@ $gridGap: 50px;
   grid-template-rows: masonry;
   max-width: 917px;
   margin: 0 auto;
-  gap: $gridGap;
+  gap: $gridGapDesktop;
   position: relative;
   top: -40px;
-
-  @media (max-width: 999px) {
-    gap: 20px;
-  }
 }
 
-.image-link {
+.image-container {
   position: relative;
-  border-radius: 1rem;
+  border-radius: 0.5rem;
   display: block;
   overflow: hidden;
 
@@ -92,13 +85,19 @@ $gridGap: 50px;
     background: linear-gradient(180deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5));
   }
 
+  img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    min-height: 150px;
+    object-fit: cover;
+  }
+
   .image-desc {
     position: absolute;
     bottom: 1.5rem;
     left: 1.25rem;
     color: #fcfcfc;
-    font-size: 1rem;
-    margin-bottom: 0.5rem;
     font-weight: 500;
 
     & > h2 {
@@ -106,26 +105,32 @@ $gridGap: 50px;
     }
 
     & > p {
-      color: #cfcece;
-      font-size: 0.9rem;
+      color: #f0efef;
+      font-size: 0.85rem;
     }
   }
-}
-
-img {
-  width: 100%;
-  height: 100%;
-  display: block;
 }
 
 .column {
   display: flex;
   flex-direction: column;
   position: relative;
-  gap: $gridGap;
+  gap: $gridGapDesktop;
+}
 
-  @media (max-width: 999px) {
-    gap: 20px;
+@media (max-width: 999px) {
+  .grid,
+  .column {
+    gap: $gridGapMobile;
+  }
+
+  .image-desc {
+    bottom: 1rem !important;
+    left: 1rem !important;
+
+    & > h2 {
+      font-size: 1rem;
+    }
   }
 }
 </style>
