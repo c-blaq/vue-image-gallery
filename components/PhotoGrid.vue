@@ -5,27 +5,35 @@ import type { LanguageServiceMode } from 'typescript';
       <div
         class="figure"
         v-if="status !== 'success'"
-        v-for="(val, index) in Array.from({ length: 2 })"
+        v-for="val in Array.from({ length: 2 })"
       >
         <Skeleton />
       </div>
       <div class="figure" v-else v-for="photo in column" :key="photo.id">
-        <NuxtLink :to="`/photo/${photo.id}`" class="image-link">
+        <div
+          tabindex="0"
+          role="button"
+          class="image-link"
+          @click="handleShowImage(photo.id)"
+        >
           <img :src="photo.urls.small" :alt="photo.alt_description" />
           <div class="image-desc">
             <h2>{{ photo.user.name }}</h2>
             <p>{{ photo.user.location }}</p>
           </div>
-        </NuxtLink>
+        </div>
       </div>
     </div>
   </div>
+  <ImageModal :photo="selectedImage" @update:photo="selectedImage = $event" />
 </template>
 
 <script lang="ts" setup>
 import type { Photo } from "~/typings";
 import Skeleton from "@/components/Skeleton.vue";
+
 const { photos } = defineProps<{ photos?: Photo[] | null; status: string }>();
+const selectedImage = ref();
 
 const numberOfColumns = window?.innerWidth < 999 ? 2 : 3;
 
@@ -37,6 +45,14 @@ const columns = computed(() => {
   });
   return columns;
 });
+
+const handleShowImage = (id: string) => {
+  const photo = photos?.find((photo) => photo.id === id);
+  if (photo) {
+    selectedImage.value = photo;
+    return;
+  }
+};
 </script>
 
 <style lang="scss" scoped>
