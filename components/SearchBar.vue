@@ -59,6 +59,7 @@ form {
 
     & > .search-input {
       height: 50px;
+      font-size: 0.9rem;
     }
   }
 }
